@@ -12,11 +12,11 @@ const User = require("../../models/User");
 // @desc Auth User
 // @access Public
 router.post("/", (req, res) => {
-  const { email, password } = req.json;
+  const { email, password } = req.body;
 
   //Simple Validation
   if (!email || !password) {
-    return res.status(400), json({ msg: "Please enter all fields" });
+    return res.status(400).json({ msg: "Please enter all fields" });
   }
 
   //Check for existing users
@@ -27,7 +27,7 @@ router.post("/", (req, res) => {
 
     // Validate password
     bcrypt.compare(password, user.password).then((isMatch) => {
-      if (isMatch) return res.status(400).json({ msg: "Invalid credentials" });
+      if (!isMatch) return res.status(400).json({ msg: "Invalid credentials" });
 
       jwt.sign(
         { id: user.id },
@@ -55,7 +55,7 @@ router.post("/", (req, res) => {
 router.get("/user", auth, (req, res) => {
   User.findById(req.user.id)
     .select("-password")
-    .then((user) => req.json(user));
+    .then((user) => res.json(user));
 });
 
 module.exports = router;

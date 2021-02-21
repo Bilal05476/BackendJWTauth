@@ -43,7 +43,7 @@ class RegisterModal extends Component {
         this.setState({ msg: null });
       }
     }
-    //If Authenticated Successful
+    //If Authenticate Successful
     if (this.state.modal) {
       if (isAuthenticated) {
         this.toggle();
@@ -74,7 +74,7 @@ class RegisterModal extends Component {
       email,
       password,
     };
-    // Attempt to User
+    // Attempt to Register
     this.props.register(newUser);
   };
 

@@ -7,15 +7,15 @@ const jwt = require("jsonwebtoken");
 //User Model
 const User = require("../../models/User");
 
-// @route GET api/users
+// @route POST api/users
 // @desc Register User
 // @access Public
-router.get("/", (req, res) => {
-  const { name, email, password } = req.json;
+router.post("/", (req, res) => {
+  const { name, email, password } = req.body;
 
   //Simple Validation
   if (!name || !email || !password) {
-    return res.status(400), json({ msg: "Please enter all fields" });
+    return res.status(400).json({ msg: "Please enter all fields" });
   }
 
   //Check for existing users
@@ -31,7 +31,7 @@ router.get("/", (req, res) => {
       password,
     });
 
-    // Create salt hash
+    // Create salt & hash
     bcrypt.genSalt(10, (err, salt) => {
       bcrypt.hash(newUser.password, salt, (err, hash) => {
         if (err) throw err;
